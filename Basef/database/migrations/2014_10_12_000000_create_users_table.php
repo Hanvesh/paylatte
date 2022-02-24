@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('address');
             $table->integer('aadhar');
 
-            $table->string('pancard');
+            $table->string('pancard')->unique();
             $table->date('dob');
             $table->string('email')->unique();
             $table->string('password');
