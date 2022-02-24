@@ -18,7 +18,7 @@ class BillFactory extends Factory
         return [
             'user_id'=> User::all()->pluck('id')->random(),
             'transaction_id'=> Transaction::all()->pluck('id')->random(),
-            'bill_amount'=>$this->faker->numberBetween(2000,15000),
+            'bill_amount'=>Transaction::all()->pluck('transaction_amount'),
             'bill_due_date'=>$this->faker->dateTime,
             'bill_status'=>$this->faker->boolean,
         ];

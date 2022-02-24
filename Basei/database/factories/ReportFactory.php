@@ -7,6 +7,7 @@ use App\Models\Credit;
 use App\Models\Refund;
 use App\Models\Repayment;
 use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ReportFactory extends Factory
@@ -21,6 +22,7 @@ class ReportFactory extends Factory
         return [
             'user_id'=> User::all()->pluck('id')->random(),
             'credit_id'=>Credit::all()->pluck('id')->random(),
+            'vendor_id'=>Vendor::all()->pluck('id')->random(),
             'transaction_id'=>Refund::all()->pluck('transaction_id')->random(),
             'bill_id'=>Bill::all()->pluck('id')->random(),
             'repayment_id'=>Repayment::all()->pluck('id')->random(),

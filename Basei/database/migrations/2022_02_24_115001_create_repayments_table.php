@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReportsTable extends Migration
+class CreateRepaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('repayments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('credit_id')->nullable()->constrained('credits');
-            $table->foreignId('transaction_id')->nullable()->constrained('transactions');
             $table->foreignId('bill_id')->nullable()->constrained('bills');
-            $table->foreignId('repayment_id')->nullable()->constrained('repayments');
-            $table->foreignId('refund_id')->nullable()->constrained('refunds');
+            $table->integer('repayment_amount');
+            $table->foreign('repayment_amount')->references('transaction_amount')->on('transactions');
+            $table->timestamp('repayment_date');
+            $table->boolean('repayment_status');
             $table->timestamps();
-
         });
     }
 
@@ -33,6 +32,6 @@ class CreateReportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('repayments');
     }
 }

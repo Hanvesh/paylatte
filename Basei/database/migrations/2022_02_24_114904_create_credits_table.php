@@ -20,7 +20,8 @@ class CreateCreditsTable extends Migration
             $table->integer('credit_score');
             $table->integer('gross_revenue');
             $table->integer('liabilties');
-            $table->integer('credit_limit');
+            $table->integer('difference');
+            $table->integer('credit_limit')->unique();
             $table->timestamps();
         });
     }

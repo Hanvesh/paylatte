@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Bill;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class RepaymentFactory extends Factory
         return [
             'user_id'=> User::all()->pluck('id')->random(),
             'bill_id'=>Bill::all()->pluck('id')->random(),
-            'repayment_amount'=>$this->faker->numberBetween(2000,15000),
+            'repayment_amount'=>Transaction::all()->pluck('transaction_amount'),
             'repayment_date'=>$this->faker->dateTime,
             'repayment_status'=>$this->faker->boolean()
         ];

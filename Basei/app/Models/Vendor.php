@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class Vendor extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'transaction_amount',
-        'transaction_status',
-        'transaction_date'
+        'name',
+        'item_cost',
+        'item_quantity'
     ];
 }

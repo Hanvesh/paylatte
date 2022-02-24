@@ -19,7 +19,7 @@ class UserFactory extends Factory
             'phone_number'=>$this->faker->phoneNumber,
             'address'=>$this->faker->address,
             'aadhar'=>$this->faker->unique()->randomNumber(),
-            'pancard'=>$this->faker->unique()->regexify("/^([A-Z]){5}([0-9]){4}([A-Z]){1}?$/"),
+            'pancard'=>$this->faker->unique()->regexify("/^([A-Z]){5}([0-9]){4}([A-Z]){1}/"),
             'dob'=>$this->faker->dateTime,
             'email'=>$this->faker->unique()->email,
             'password'=>$this->faker->unique()->password,
