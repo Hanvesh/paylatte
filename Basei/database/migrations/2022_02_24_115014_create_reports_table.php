@@ -19,8 +19,11 @@ class CreateReportsTable extends Migration
             $table->foreignId('credit_id')->nullable()->constrained('credits');
             $table->foreignId('vendor_id')->nullable()->constrained('vendors');
             $table->foreignId('transaction_id')->nullable()->constrained('transactions');
+            $table->boolean('transaction_status');
             $table->foreignId('bill_id')->nullable()->constrained('bills');
+            $table->integer('bill_amount');
             $table->foreignId('repayment_id')->nullable()->constrained('repayments');
+            $table->boolean('repayment_status');
             $table->foreignId('refund_id')->nullable()->constrained('refunds');
             $table->timestamps();
 

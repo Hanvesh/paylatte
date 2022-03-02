@@ -14,13 +14,18 @@ class BillFactory extends Factory
      * @return array
      */
     public function definition()
-    {
+    { $user = User::all()->random();
+        $user_id = $user->id;
+        $transaction = Transaction::all()->random();
+        $trans_id = $transaction->id;
+        $trans_amount=$transaction->transaction_amount;
+        $transaction_status = $transaction->status;
         return [
-            'user_id'=> User::all()->pluck('id')->random(),
-            'transaction_id'=> Transaction::all()->pluck('id')->random(),
-            'bill_amount'=>Transaction::all()->pluck('transaction_amount'),
+            'user_id'=> $user_id,
+            'transaction_id'=> $trans_id,
+            'bill_amount'=>$trans_amount,
             'bill_due_date'=>$this->faker->dateTime,
             'bill_status'=>$this->faker->boolean,
-        ];
-    }
+        ];}
+
 }

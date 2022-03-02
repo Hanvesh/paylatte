@@ -16,10 +16,15 @@ class RepaymentFactory extends Factory
      */
     public function definition()
     {
+        $user = User::all()->random();
+        $user_id = $user->id;
+        $bill = Bill::all()->random();
+        $bill_id = $bill->id;
+        $bill_amount=$bill->bill_amount;
         return [
-            'user_id'=> User::all()->pluck('id')->random(),
-            'bill_id'=>Bill::all()->pluck('id')->random(),
-            'repayment_amount'=>Transaction::all()->pluck('transaction_amount'),
+            'user_id'=> $user_id,
+            'bill_id'=>$bill_id,
+            'repayment_amount'=> $bill_amount,
             'repayment_date'=>$this->faker->dateTime,
             'repayment_status'=>$this->faker->boolean()
         ];

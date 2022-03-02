@@ -10,7 +10,9 @@ class Vendor extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'item_cost',
-        'item_quantity'
+        'email',
+        'password',
+        'phone_number',
+        'address'
     ];
 }

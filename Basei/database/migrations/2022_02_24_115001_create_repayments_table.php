@@ -18,7 +18,6 @@ class CreateRepaymentsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('bill_id')->nullable()->constrained('bills');
             $table->integer('repayment_amount');
-            $table->foreign('repayment_amount')->references('transaction_amount')->on('transactions');
             $table->timestamp('repayment_date');
             $table->boolean('repayment_status');
             $table->timestamps();

@@ -18,12 +18,10 @@ class CreateTransactionsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('credit_id')->nullable()->constrained('credits');
             $table->foreignId('vendor_id')->nullable()->constrained('vendors');
-            $table->Integer('credit_limit');
-            $table->foreign('credit_limit')->references('credit_limit')->on('credits');
-            $table->Integer('item_cost');
-            $table->foreign('item_cost')->references('item_cost')->on('vendors');
-            $table->integer('transaction_amount')->unique();
+            $table->Integer('transaction_amount');
+
             $table->boolean('transaction_status');
+            $table->Integer('credit_balance');
             $table->timestamp('transaction_date');
             $table->timestamps();
         });

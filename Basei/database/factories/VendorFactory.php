@@ -15,8 +15,10 @@ class VendorFactory extends Factory
     {
         return [
             'name'=>$this->faker->name,
-            'item_cost'=>$this->faker->numberBetween(2000,20000),
-            'item_quantity'=>$this->faker->numberBetween(1,500),
+            'email'=>$this->faker->email,
+            'password'=>$this->faker->password,
+            'phone_number'=>$this->faker->phoneNumber,
+            'address'=>$this->faker->address,
         ];
     }
 }

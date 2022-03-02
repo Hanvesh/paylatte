@@ -18,7 +18,6 @@ class CreateBillsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('transaction_id')->nullable()->constrained('transactions');
             $table->integer('bill_amount');
-            $table->foreign('bill_amount')->references('transaction_amount')->on('transactions');
             $table->timestamp('bill_due_date');
             $table->boolean('bill_status');
             $table->timestamps();

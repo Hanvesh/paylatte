@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,7 +17,7 @@ class CreditFactory extends Factory
     {
         $credit = [
             'pancard' => User::all()->pluck('pancard')->random(),
-            'credit_score' => $this->faker->numberBetween(300, 900),
+            'credit_score' => $this->faker->numberBetween(600, 900),
             'gross_revenue' => $this->faker->numberBetween(10000, 1000000),
             'liabilties' => $this->faker->numberBetween(2000, 50000),
         ];
@@ -25,13 +26,6 @@ class CreditFactory extends Factory
         return $credit;
     }
 
-    function difference($a, $b)
-    {
-        if ($b != 0) {
-            $a -= $b;
-        }
-        return $a;
-    }
 
     function limit($i, $x)
     {
