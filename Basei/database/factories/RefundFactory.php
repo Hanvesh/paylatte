@@ -22,8 +22,8 @@ class RefundFactory extends Factory
         $transaction_status = $transaction->status;
         if($transaction_status == false){
             return [
-            'user_id'=> $user_id,
-            'transaction_id'=>$trans_id,
+            'user_id'=>  User::all()->where('id',$user_id)->first(),
+            'transaction_id'=> Transaction::all()->where('id',$trans_id)->first(),
             'transaction_amount'=>$trans_amount,
             'refund_date'=>$this->faker->dateTime
         ];

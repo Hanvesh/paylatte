@@ -21,8 +21,8 @@ class BillFactory extends Factory
         $trans_amount=$transaction->transaction_amount;
         $transaction_status = $transaction->status;
         return [
-            'user_id'=> $user_id,
-            'transaction_id'=> $trans_id,
+            'user_id'=> User::all()->where('id',$user_id)->first(),
+            'transaction_id'=> Transaction::all()->where('id',$trans_id)->first(),
             'bill_amount'=>$trans_amount,
             'bill_due_date'=>$this->faker->dateTime,
             'bill_status'=>$this->faker->boolean,

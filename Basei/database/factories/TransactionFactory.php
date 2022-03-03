@@ -27,9 +27,9 @@ class TransactionFactory extends Factory
         $limit = $credit->credit_limit;
 
         $transaction = [
-            'user_id' => $user_id,
-            'credit_id' =>$credit_id,
-            'vendor_id' => $vendor_id,
+            'user_id' => User::all()->where('id',$user_id)->first(),
+            'credit_id' => Credit::all()->where('id',$credit_id)->first(),
+            'vendor_id' =>  Vendor::all()->where('id',$vendor_id)->first(),
             'transaction_amount' =>$this->faker->numberBetween(0,$limit),
             'transaction_status' => $this->faker->boolean,
             'transaction_date' => $this->faker->dateTime,
