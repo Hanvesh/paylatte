@@ -22,7 +22,6 @@ class CreateAdminsTable extends Migration
             $table->string('address');
             $table->date('dob');
             $table->date('joined_date');
-            $table->foreignId('report_id')->nullable()->constrained('reports');
             $table->rememberToken();
             $table->timestamps();
         });

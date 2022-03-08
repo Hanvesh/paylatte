@@ -27,14 +27,14 @@ class TransactionFactory extends Factory
         $limit = $credit->credit_limit;
 
         $transaction = [
-            'user_id' => User::all()->where('id',$user_id)->first(),
-            'credit_id' => Credit::all()->where('id',$credit_id)->first(),
-            'vendor_id' =>  Vendor::all()->where('id',$vendor_id)->first(),
+            'user_id' => $user_id,
+            'vendor_id' => $vendor_id,
+            'credit_limit'=>$limit,
             'transaction_amount' =>$this->faker->numberBetween(0,$limit),
             'transaction_status' => $this->faker->boolean,
-            'transaction_date' => $this->faker->dateTime,
+            'transaction_date' => $this->faker->dateTimeBetween('-2 years'),
         ];
-       if($transaction['transaction_status']== true){ $transaction['credit_balance'] = $limit - $transaction['transaction_amount'];}
+       if ($transaction['transaction_status']== true){ $transaction['credit_balance'] = $limit - $transaction['transaction_amount'];}
        else {$transaction['credit_balance'] = $limit;}
         return $transaction;
 

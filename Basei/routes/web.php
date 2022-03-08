@@ -13,6 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('sending-queue-emails', [\App\Http\Controllers\TestQueueEmails::class,'sendTestEmails']);

@@ -16,8 +16,8 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('credit_id')->nullable()->constrained('credits');
             $table->foreignId('vendor_id')->nullable()->constrained('vendors');
+            $table->integer('credit_limit');
             $table->Integer('transaction_amount');
 
             $table->boolean('transaction_status');

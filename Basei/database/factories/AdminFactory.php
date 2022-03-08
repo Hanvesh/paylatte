@@ -22,7 +22,6 @@ class AdminFactory extends Factory
             'address'=>$this->faker->address,
             'dob'=>$this->faker->dateTime,
             'joined_date'=>$this->faker->dateTime,
-            'report_id'=> Report::all()->pluck('id')->random(),
         ];
     }
 }

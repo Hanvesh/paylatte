@@ -15,7 +15,6 @@ class CreateRepaymentsTable extends Migration
     {
         Schema::create('repayments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('bill_id')->nullable()->constrained('bills');
             $table->integer('repayment_amount');
             $table->timestamp('repayment_date');

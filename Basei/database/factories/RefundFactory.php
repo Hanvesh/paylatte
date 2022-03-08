@@ -14,18 +14,17 @@ class RefundFactory extends Factory
      * @return array
      */
     public function definition()
-    { $user = User::all()->random();
-        $user_id = $user->id;
+    {
         $transaction = Transaction::all()->random();
         $trans_id = $transaction->id;
         $trans_amount=$transaction->transaction_amount;
         $transaction_status = $transaction->status;
+        $transaction_date = $transaction->transaction_date;
         if($transaction_status == false){
             return [
-            'user_id'=>  User::all()->where('id',$user_id)->first(),
             'transaction_id'=> Transaction::all()->where('id',$trans_id)->first(),
-            'transaction_amount'=>$trans_amount,
-            'refund_date'=>$this->faker->dateTime
+            'refund_amount'=>$trans_amount,
+            'refund_date'=>$this->faker->dateTimeBetween($transaction_date,'+1 week')
         ];
     }
     }

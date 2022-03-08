@@ -14,11 +14,13 @@ class CreditFactory extends Factory
      * @return array
      */
     public function definition()
-    {
+    { $user = User::all();
+        $user_id = $user->id;
+        $pan = $user->pancard;
         $credit = [
-            'pancard' => User::all()->pluck('pancard')->random(),
+            'pancard' => $pan,
             'credit_score' => $this->faker->numberBetween(600, 900),
-            'gross_revenue' => $this->faker->numberBetween(10000, 1000000),
+            'gross_revenue' => $this->faker->numberBetween(10000, 100000),
             'liabilties' => $this->faker->numberBetween(2000, 50000),
         ];
         $credit['difference'] = $credit['gross_revenue'] - $credit['liabilties'];

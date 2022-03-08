@@ -16,16 +16,16 @@ class RepaymentFactory extends Factory
      */
     public function definition()
     {
-        $user = User::all()->random();
-        $user_id = $user->id;
+        $transaction = Transaction::all()->random();
+        $transaction_date = $transaction->transaction_date;
         $bill = Bill::all()->random();
         $bill_id = $bill->id;
         $bill_amount=$bill->bill_amount;
+        $bill_date=$bill->bill_due_date;
         return [
-            'user_id'=> $user_id,
             'bill_id'=>$bill_id,
             'repayment_amount'=> $bill_amount,
-            'repayment_date'=>$this->faker->dateTime,
+            'repayment_date'=> $this->faker->dateTimeBetween($transaction_date,"$transaction_date + 1 month"),
             'repayment_status'=>$this->faker->boolean()
         ];
     }
