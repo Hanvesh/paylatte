@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone_number');
-            $table->string('address');
+           $table->string('address');
             $table->integer('aadhar');
 
             $table->string('pancard')->unique();

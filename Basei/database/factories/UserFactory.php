@@ -17,7 +17,7 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name,
             'phone_number'=>$this->faker->phoneNumber,
-            'address'=>$this->faker->address,
+           'address'=>$this->faker->address,
             'aadhar'=>$this->faker->unique()->randomNumber(),
             'pancard'=>$this->faker->unique()->regexify("/^([A-Z]){5}([0-9]){4}([A-Z]){1}/"),
             'dob'=>$this->faker->dateTime,
