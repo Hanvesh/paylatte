@@ -23,7 +23,7 @@ class BillSeeder extends Seeder
         DB::table('bills')->insert([
             'transaction_id'=>$trans_id,
             'bill_amount'=>$trans_amount,
-            'bill_due_date'=>$transaction_date + 2,
+            'bill_due_date'=>$transaction_date,
             'bill_status'=>rand(0,1)
         ]);
     }

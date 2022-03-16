@@ -23,7 +23,7 @@ class RefundSeeder extends Seeder
         DB::table('refunds')->insert([
             'transaction_id'=> $trans_id,
             'refund_amount'=>$trans_amount,
-            'refund_date'=>($transaction_date + 1)
+            'refund_date'=>($transaction_date)
         ]);
     }
 

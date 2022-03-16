@@ -37,7 +37,26 @@ class VendorController extends Controller
      */
     public function store(StoreVendorRequest $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|unique:users|email',
+            'password' => 'required|string|max:6',
+            'phone_number' => 'required|integer|digits_between:12,12',
+            'address' => 'required|string',
+        ]);
+
+        $newvendor = new Vendor([
+            'name' => $request->get('name'),
+           ' email'=>$request->get('email'),
+            'password'=>$request->get('password'),
+            'phone_number' => $request->get('phone_number'),
+            'address'=>$request->get('address'),
+
+        ]);
+
+        $newvendor->save();
+
+        return response()->json($newvendor);
     }
 
     /**
@@ -72,7 +91,25 @@ class VendorController extends Controller
      */
     public function update(UpdateVendorRequest $request, Vendor $vendor)
     {
-        //
+        $vendor = Vendor::findOrFail($vendor);
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|unique:users|email',
+            'password' => 'required|string|max:6',
+            'phone_number' => 'required|integer|digits_between:12,12',
+            'address' => 'required|string',
+        ]);
+        $vendor->name = $request->get('name');
+        $vendor->email = $request->get('email');
+        $vendor->password=$request->get('password');
+        $vendor->phone_number = $request->get('phone_number');
+        $vendor->address = $request->get('address');
+
+        $vendor->save();
+
+        return response()->json($vendor);
+
+
     }
 
     /**
@@ -83,6 +120,9 @@ class VendorController extends Controller
      */
     public function destroy(Vendor $vendor)
     {
-        //
+        $vendor = Vendor::findOrFail($vendor);
+        $vendor->delete();
+
+        return response()->json($vendor::all());
     }
 }
