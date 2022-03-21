@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Credit;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -119,12 +120,19 @@ class UserController extends Controller
 
         return response()->json($user::all());
     }
-    public function showlimit($pan ){
-        $user = DB::table('credits')->select('credit_limit')
-                                    ->where('pancard','=',(DB::table('users')
-                                        ->select('pancard')
-                                        ->where('pancard','=',$pan)->first()))->first();
+    public function showlimit($pan){
 
-        return response()->json($user::all());
+        $limit = DB::table('credits')->select('credit_limit')
+                                    ->where('pancard','=',$pan)->first();
+
+        return response()->json($limit);
     }
+    public function showbalance($user){
+
+        $balance = DB::table('transactions')->select('credit_balance')
+            ->where('user_id','=',$user)->first();
+
+        return response()->json($balance);
+    }
+
 }
