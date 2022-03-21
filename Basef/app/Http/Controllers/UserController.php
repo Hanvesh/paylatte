@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -109,12 +110,20 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
+
+        return response()->json($user::all());
+    }
+    public function showlimit($pan ){
+        $user = DB::table('credits')->select('credit_limit')
+                                    ->where('pancard','=',(DB::table('users')
+                                        ->select('pancard')
+                                        ->where('pancard','=',$pan)->first()))->first();
 
         return response()->json($user::all());
     }

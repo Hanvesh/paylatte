@@ -27,7 +27,12 @@ Route::resource('transactions',\App\Http\Controllers\TransactionController::clas
 Route::resource('repayments',\App\Http\Controllers\RepaymentController::class);
 Route::resource('reports',\App\Http\Controllers\ReportController::class);*/
 Route::resource('vendors',\App\Http\Controllers\VendorController::class);
+//Route::get('/vendor/items/{id}',[\App\Http\Controllers\VendorController::class,'showitem']);
 
+Route::resource('items',\App\Http\Controllers\ItemController::class);
+Route::get('/vendor/items', function () {
+    return redirect('/api/items');
+});
 
 Route::get('/admin/users/{id}',[\App\Http\Controllers\AdminController::class,'showuser']);
 Route::get('/admin/bills/{id}',[\App\Http\Controllers\AdminController::class,'showbill']);
@@ -37,4 +42,6 @@ Route::get('/admin/repayments/{id}',[\App\Http\Controllers\AdminController::clas
 Route::get('/admin/reports/{id}',[\App\Http\Controllers\AdminController::class,'showreport']);
 Route::get('/admin/transactions/{id}',[\App\Http\Controllers\AdminController::class,'showtransaction']);
 Route::get('/admin/vendors/{id}',[\App\Http\Controllers\AdminController::class,'showvendor']);
+
+Route::get('limit/users/{id}',[\App\Http\Controllers\UserController::class,'showlimit']);
 

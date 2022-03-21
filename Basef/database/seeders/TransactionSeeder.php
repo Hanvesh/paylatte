@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Credit;
+use App\Models\Item;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Vendor;
@@ -24,19 +25,20 @@ class TransactionSeeder extends Seeder
         $vendor_id = $vendor->id;
         $credit = Credit::all()->random();
         $limit = $credit->credit_limit;
+        $item = Item::all()->random();
+        $item_cost =$item->item_cost ;
         DB::table('transactions')->insert([
             'user_id' => $user_id,
             'vendor_id' => $vendor_id,
             'credit_limit'=>$limit,
-            'transaction_amount' =>$tr = rand(1,$limit),
+            'transaction_amount' => $tr = $item_cost,
             'transaction_status' => $ts = rand(0,1),
             'transaction_date' => now(),
             'credit_balance' => $this->diff($ts,$limit,$tr)
         ]);
     }
     function diff($a,$b,$c){
-        if($a ==1)
-        {
+        if (($a ==1) and ($b > $c)){
             $b = $b - $c;
         }
         return $b;
