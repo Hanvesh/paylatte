@@ -15,6 +15,7 @@ class ItemSeeder extends Seeder
     public function run()
     {
         DB::table('items')->insert([
+            'id'=>'1',
             'item_name'=>'Casio Watch',
             'item_cost'=>'1000',
             'available_quantity'=>'100',

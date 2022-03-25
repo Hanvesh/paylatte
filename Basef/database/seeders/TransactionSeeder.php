@@ -4,10 +4,14 @@ namespace Database\Seeders;
 
 use App\Models\Credit;
 use App\Models\Item;
+use App\Models\Refund;
+use App\Models\Repayment;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Vendor;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class TransactionSeeder extends Seeder
@@ -19,6 +23,7 @@ class TransactionSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Factory::create();
         $user = User::all()->random();
         $user_id = $user->id;
         $vendor = Vendor::all()->random();
@@ -27,14 +32,18 @@ class TransactionSeeder extends Seeder
         $limit = $credit->credit_limit;
         $item = Item::all()->random();
         $item_cost =$item->item_cost ;
+
+        $arr =['repayment','refund','debit'];
+
         DB::table('transactions')->insert([
-            'user_id' => $user_id,
-            'vendor_id' => $vendor_id,
+            'sender_id' => env('TX_USER_ID', $user_id),
+            'receiver_id' => $vendor_id,
+            'transaction_type'=>Arr::random($arr),
             'credit_limit'=>$limit,
             'transaction_amount' => $tr = $item_cost,
             'transaction_status' => $ts = rand(0,1),
-            'transaction_date' => now(),
-            'credit_balance' => $this->diff($ts,$limit,$tr)
+            'transaction_date' => $faker->dateTimeBetween('-2 years'),
+            'credit_balance' => $this->diff($ts,$limit,$tr),
         ]);
     }
     function diff($a,$b,$c){
@@ -44,4 +53,5 @@ class TransactionSeeder extends Seeder
         return $b;
 
     }
+
 }

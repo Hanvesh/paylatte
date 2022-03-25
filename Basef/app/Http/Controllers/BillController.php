@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBillRequest;
 use App\Http\Requests\UpdateBillRequest;
 use App\Models\Bill;
+use App\Models\Transaction;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class BillController extends Controller
 {
@@ -32,7 +35,7 @@ class BillController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBillRequest  $request
+     * @param \App\Http\Requests\StoreBillRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreBillRequest $request)
@@ -43,7 +46,7 @@ class BillController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Bill  $bill
+     * @param \App\Models\Bill $bill
      * @return \Illuminate\Http\Response
      */
     public function show(Bill $bill_id)
@@ -55,7 +58,7 @@ class BillController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Bill  $bill
+     * @param \App\Models\Bill $bill
      * @return \Illuminate\Http\Response
      */
     public function edit(Bill $bill)
@@ -66,8 +69,8 @@ class BillController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBillRequest  $request
-     * @param  \App\Models\Bill  $bill
+     * @param \App\Http\Requests\UpdateBillRequest $request
+     * @param \App\Models\Bill $bill
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateBillRequest $request, Bill $bill)
@@ -78,11 +81,38 @@ class BillController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Bill  $bill
+     * @param \App\Models\Bill $bill
      * @return \Illuminate\Http\Response
      */
     public function destroy(Bill $bill)
     {
         //
     }
+
+    function showtransaction($us)
+    {
+        $transaction = DB::table('transactions')->select('receiver_id', 'transaction_amount',
+            'transaction_date', 'transaction_status')->where('sender_id', '=', $us)->get();
+
+        $bill = $transaction->sum('transaction_amount');
+
+        return response()->json($transaction);
+
+    }
+
+    function showtransactionbill($us)
+    {
+        $transaction = DB::table('transactions')->select('receiver_id', 'transaction_amount',
+            'transaction_date', 'transaction_status')->where('sender_id', '=', $us)
+            ->where('transaction_status','=',true)->get();
+            $bill = $transaction->sum('transaction_amount');
+            return response()->json($bill);
+
+
+
+
+    }
+
 }
+
+

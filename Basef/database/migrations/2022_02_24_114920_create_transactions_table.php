@@ -15,14 +15,16 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('vendor_id')->nullable()->constrained('vendors');
+            $table->integer('sender_id');
+            $table->integer('receiver_id');
+            $table->string('transaction_type');
             $table->integer('credit_limit');
             $table->Integer('transaction_amount');
 
             $table->boolean('transaction_status');
             $table->Integer('credit_balance');
             $table->timestamp('transaction_date');
+
             $table->timestamps();
         });
     }

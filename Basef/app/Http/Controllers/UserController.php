@@ -134,5 +134,11 @@ class UserController extends Controller
 
         return response()->json($balance);
     }
+    public function showbill($user){
+        $bill = DB::table('bills')->select('bill_amount')
+            ->where('user_id','=',$user)->first();
+
+        return response()->json($bill);
+    }
 
 }

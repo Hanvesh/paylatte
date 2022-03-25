@@ -45,4 +45,6 @@ Route::get('/admin/vendors/{id}',[\App\Http\Controllers\AdminController::class,'
 
 Route::get('limit/users/{id}',[\App\Http\Controllers\UserController::class,'showlimit']);
 Route::get('balance/users/{id}',[\App\Http\Controllers\UserController::class,'showbalance']);
-
+Route::get('bill/users/{id}',[\App\Http\Controllers\UserController::class,'showbill']);
+Route::get('transactions/users/{id}',[\App\Http\Controllers\BillController::class,'showtransaction']);
+Route::get('transactionBill/users/{id}',[\App\Http\Controllers\BillController::class,'showtransactionbill']);
