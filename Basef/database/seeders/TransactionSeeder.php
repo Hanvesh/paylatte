@@ -36,7 +36,7 @@ class TransactionSeeder extends Seeder
         $arr =['repayment','refund','debit'];
 
         DB::table('transactions')->insert([
-            'sender_id' => env('TX_USER_ID', $user_id),
+            'sender_id' =>  $user_id,
             'receiver_id' => $vendor_id,
             'transaction_type'=>Arr::random($arr),
             'credit_limit'=>$limit,

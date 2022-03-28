@@ -18,19 +18,17 @@ class BillSeeder extends Seeder
      */
     public function run()
     {
-
+        $faker = Factory::create();
         $user = \App\Models\User::all()->random();
         $user_id=$user->id;
-        $transaction=Transaction::all()->where('sender_id',$user_id)->first();
-        $trans_id=$transaction->id;
-        $trans_amount = $transaction->transaction_amount;
-        $trans_date= $transaction->transaction_date;
-       $trans_amount= DB::table('transactions')
-            ->groupBy('sender_id')->pluck('transaction_amount');
+        $transaction = DB::table('transactions')->select('receiver_id', 'transaction_amount',
+            'transaction_date', 'transaction_status')->where('sender_id', '=', $user_id)
+            ->where('transaction_status','=',true)->get();
+        $bill = $transaction->sum('transaction_amount');
+        $trans_date = $transaction->get('transaction_date');
         DB::table('bills')->insert([
             'user_id'=>$user_id,
-            'transaction_id'=>$trans_id,
-            'bill_amount'=>$trans_amount,
+            'bill_amount'=>$bill,
             'bill_due_date'=>$faker->dateTimeBetween($trans_date,"$trans_date + 2 month"),
             'bill_status'=>rand(0,1)
         ]);
