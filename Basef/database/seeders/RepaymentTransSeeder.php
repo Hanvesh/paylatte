@@ -21,7 +21,7 @@ class RepaymentTransSeeder extends Seeder
      * @return void
      */
     public function run()
-    { $faker =Factory::create();
+    {
         $user = User::all()->random();
         $user_id = $user->id;
 
@@ -32,6 +32,7 @@ class RepaymentTransSeeder extends Seeder
         $repayment_id = $repayment->id;
         $repayment_status=$repayment->repayment_status;
         $repayment_cost = $repayment->repayment_amount;
+        $repayment_date = $repayment->repayment_date;
         if($repayment_status == true) {
             DB::table('transactions')->insert([
                 'id' => $repayment_id,
@@ -41,7 +42,7 @@ class RepaymentTransSeeder extends Seeder
                 'credit_limit' => $limit,
                 'transaction_amount' => $repayment_cost,
                 'transaction_status' => 1,
-                'transaction_date' => $faker->dateTimeBetween('-2 years'),
+                'transaction_date' => $repayment_date,
                 'credit_balance' => $limit,
             ]);
         }

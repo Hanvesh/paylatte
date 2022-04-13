@@ -28,11 +28,30 @@ class BillSeeder extends Seeder
         $trans_date = $transaction->get('transaction_date');
         DB::table('bills')->insert([
             'user_id'=>$user_id,
-            'bill_amount'=>$bill,
-            'bill_due_date'=>$faker->dateTimeBetween($trans_date,"$trans_date + 2 month"),
+            'bill_amount'=>(int)$this->processfee($bill),
+            'bill_due_date'=>$faker->dateTimeBetween($trans_date,"$trans_date + 1 month"),
             'bill_status'=>rand(0,1)
         ]);
 
 
+
+    }
+    function processfee($bill){
+        if($bill >=1 && $bill <=1000){
+            $bill  +=(0.02 * $bill);
+                return $bill;
+        }
+        if($bill >=1001 && $bill <=5000){
+            $bill  +=(0.04 * $bill);
+            return $bill;
+        }
+        if($bill >=5001 && $bill <=10000){
+            $bill  +=(0.06 * $bill);
+            return $bill;
+        }
+        if($bill >10000){
+            $bill  +=(0.08 * $bill);
+            return $bill;
+        }
     }
 }
