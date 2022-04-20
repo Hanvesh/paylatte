@@ -59,7 +59,7 @@ class RefundController extends Controller
         if($trans_status == false ) {
             DB::table('refunds')->insert([
                 'transaction_id' => $trans_id,
-                'refund_amount' => $request->get('transaction_amount'),
+                'refund_amount' => $trans_amount,
                 'refund_date' => $faker->dateTimeBetween($trans_date,'+1 week'),
                 'refund_status'=>1,
             ]);
