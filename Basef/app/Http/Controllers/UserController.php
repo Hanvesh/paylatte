@@ -63,6 +63,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
+
         return response()->json($user);
     }
 
@@ -130,7 +131,7 @@ class UserController extends Controller
     public function showbalance($user){
 
         $balance = DB::table('transactions')->select('credit_balance')
-            ->where('user_id','=',$user)->first();
+            ->where('sender_id','=',$user)->first();
 
         return response()->json($balance);
     }

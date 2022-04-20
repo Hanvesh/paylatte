@@ -25,7 +25,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $admins = Admin::all();
+        return response()->json($admins);
     }
 
     /**
@@ -33,10 +34,7 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -44,9 +42,30 @@ class AdminController extends Controller
      * @param  \App\Http\Requests\StoreAdminRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAdminRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'string',
+            'email' => 'email',
+            'password'=>'string',
+            'phone_number'=>'integer|digits_between:12,12',
+            'address' => 'string',
+            'dob' => 'date',
+            'joined_date'=>'date',
+        ]);
+        $newAdmin = new admin([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'phone_number' => $request->get('phone_number'),
+            'address'=>$request->get('address'),
+            'password'=>$request->get('password'),
+            'dob'=>$request->get('dob'),
+            'joined_date'=>$request->get('joined_date')
+        ]);
+
+        $newAdmin->save();
+
+        return response()->json($newAdmin);
     }
 
     /**
@@ -55,8 +74,9 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function show(Admin $admin)
-    {
+    public function show($id)
+    {  $admins = admin::findOrFail($id);
+        return response()->json($admins);
     }
 
     /**
@@ -77,9 +97,29 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAdminRequest $request, Admin $admin)
+    public function update(Request $request,$id)
     {
-        //
+        $admins = Admin::findOrFail($id);
+        $request->validate([
+            'name' => 'string',
+            'email' => 'email',
+            'password'=>'string',
+            'phone_number'=>'integer|digits_between:12,12',
+            'address' => 'string',
+            'dob' => 'date',
+            'joined_date'=>'date',
+        ]);
+        $admins->name = $request->get('name');
+        $admins->email = $request->get('email');
+        $admins->password=$request->get('password');
+        $admins->phone_number=$request->get('phone_number');
+        $admins->address=$request->get('address');
+        $admins->dob=$request->get('dob');
+        $admins->joined_date=$request->get('joined_date');
+
+        $admins->save();
+
+        return response()->json($admins);
     }
 
     /**
@@ -88,9 +128,12 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Admin $user)
+    public function destroy(Admin $admin)
     {
+        $admins = Admin::findOrFail($admin);
+        $admins->delete();
 
+        return response()->json($admins::all());
     }
 
     public function showuser($id){
