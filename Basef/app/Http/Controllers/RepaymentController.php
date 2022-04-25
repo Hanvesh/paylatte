@@ -60,9 +60,9 @@ class RepaymentController extends Controller
             'repayment_status'=>$rs = rand(0,1)
         ]);
         if($rs==1){
-            return response("Repayment Sucessfull");
+            return response()->json(["status","Repayment Sucessfull"]);
         }
-        return response("Repayment Not Sucessfull");
+        return response()->json(["status","Repayment Not Sucessfull"]);
 
     }
     function lateFee($bill,$bd,$rd){
@@ -80,6 +80,7 @@ class RepaymentController extends Controller
             if($bill >=4001 && $bill <= 6000){
                 $bill +=($c * 20);
                 return $bill;
+
             }
             if($bill > 6000 ){
                 $bill +=($c * 30);

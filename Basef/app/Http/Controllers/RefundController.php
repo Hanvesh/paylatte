@@ -63,9 +63,9 @@ class RefundController extends Controller
                 'refund_date' => $faker->dateTimeBetween($trans_date,'+1 week'),
                 'refund_status'=>1,
             ]);
-            return response("Transaction failed and send to refunds");
+            return response()->json(["status","Transaction failed and send to refunds"]);
         }
-        return response("Transaction failed but not send to refunds");
+        return response()->json(["status","Transaction failed but not send to refunds"]);
 
     }
 
