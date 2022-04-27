@@ -44,18 +44,18 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $faker = Factory::create();
-        $credit = User::all()->random()->where('id','=',$request->get('sender_id'))->first();
+  /*      $credit = User::all()->where('id','=',$request->get('sender_id'))->first();
         $pan = $credit->pancard;
         $panc = DB::table('credits')->select('credit_limit')
-            ->where('pancard','=',$pan)->first();
-        $limit =$panc->credit_limit;
+            ->where('pancard','=',$pan)->first(); */
         $request->validate([
             'sender_id'=>'required|integer',
             'receiver_id'=>'required|integer',
             'transaction_amount'=>'required|integer'
         ]);
         $rt = DB::table('transactions')->select('credit_balance')
-            ->where('sender_id','=','755496681904340993')->orderBy('transaction_date','desc')->first();
+            ->where('sender_id','=',$request->get('sender_id'))
+            ->orderBy('transaction_date','desc')->first();
         $r = $rt->credit_balance;
         echo($r);
         DB::table('transactions')->insert([
@@ -64,37 +64,25 @@ class TransactionController extends Controller
             'transaction_type'=>'debit',
             'transaction_amount' => $tr = $request->get('transaction_amount'),
             'transaction_status' => $ts = rand(0,1),
-            'transaction_date' => $faker->dateTimeBetween('-2 years'),
-            'credit_balance'=> $this->diff($r,$tr,$ts)
+            'transaction_date' => now(),
+            'credit_balance'=> $this->diff($r,$tr)
 
         ]);
-       /* else if($rt >= 1){
-            $r = DB::table('transactions')->select('credit_balance')
-                ->where('sender_id','=',$request->get('sender_id'))->last();
-            $rp = $r->credit_balance;
-            DB::table('transactions')->insert([
-                'sender_id' =>$request->get('sender_id'),
-                'receiver_id' => $request->get('receiver_id'),
-                'transaction_type'=>'debit',
-                'transaction_amount' => $tr = $request->get('transaction_amount'),
-                'transaction_status' => $ts = rand(0,1),
-                'transaction_date' => $faker->dateTimeBetween('-2 years'),
-                'credit_balance'=>  $this->diff($rp,$tr,$ts)
-            ]);
-        }*/
-
-
-           return response()->json(["status"=>"Transaction Recorded"]);
+        if($ts ==1){return response()->json(["status"=>"Transaction Recorded and Successful"]);}
+        return response()->json(["status"=>"Transaction Recorded and Failed"]);
 
 
 
 
     }
 
-    function diff($b,$c,$a)
+    function diff($b,$c)
     {
-        if(($b > $c) && ($a ==1)){
+        if(($b > $c) &&($b > 1)){
             return $b -$c;
+        }
+        else{
+            return $b;
         }
     }
 
@@ -129,9 +117,14 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTransactionRequest $request, Transaction $transaction)
+    public function update(Request $request,$id)
     {
-        //
+        $transaction = Transaction::findOrFail($id);
+
+        $transaction->transaction_status =(bool)$request->get('transaction_status');
+        $transaction->save();
+
+        return response()->json($transaction);
     }
 
     /**

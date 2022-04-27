@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRepaymentRequest;
 use App\Http\Requests\UpdateRepaymentRequest;
 use App\Models\Bill;
 use App\Models\Repayment;
+use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Http\Request;
@@ -38,31 +39,44 @@ class RepaymentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreRepaymentRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $faker=Factory::create();
         $request->validate([
-            'user_id'=>'required|integer',
+            'name'=>'required|string',
+            'dob'=>'required|date'
         ]);
-        $id= $request->get('user_id');
-        $bill = DB::table('bills')->select('id','bill_amount',
-            'bill_due_date')->where('user_id', '=', $id)->first();
+        $user = User::all()->where('name','=', $request->get('name'))
+            ->where('dob','=',$request->get('dob'))->first();
+        $id = $user->id;
+        $bill = Bill::all()->where('user_id','=',$id)->first();
         $bill_id = $bill->id;
-        $bill_amount=$bill->bill_amount;
-        $bill_date=$bill->bill_due_date;
-        DB::table('repayments')->insert([
-            'bill_id'=>$bill_id,
+        $rt = DB::table('transactions')->select('credit_balance')
+            ->where('sender_id','=',$id)
+            ->orderBy('transaction_date','desc')->first();
+        $r = $rt->credit_balance;
+        $repayment = Repayment::all()->where('bill_id','=',$bill_id)->first();
+        $repayment_id = $repayment->id;
+        $repayment_status=$repayment->repayment_status;
+        $repayment_cost = $repayment->repayment_amount;
+        $repayment_date = $repayment->repayment_date;
+        if($repayment_status) {
+            DB::table('transactions')->insert([
+                'id' => $repayment_id,
+                'sender_id' => $id,
+                'receiver_id' => '1612512120205',
+                'transaction_type' => 'repayment',
+                'transaction_amount' => $repayment_cost,
+                'transaction_status' => 1,
+                'transaction_date' =>$rs=now(),
+                'credit_balance' => $this->lateFee($r,$repayment_date,$rs)
+            ]);
 
-            'repayment_date'=>$rd=$faker->dateTimeBetween($bill_date,"$bill_date + 2 month"),
-            'repayment_amount'=> (int)$this->lateFee($bill_amount,$bill_date,$rd),
-            'repayment_status'=>$rs = rand(0,1)
-        ]);
-        if($rs==1){
-            return response()->json(["status","Repayment Sucessfull"]);
-        }
-        return response()->json(["status","Repayment Not Sucessfull"]);
+            return response()->json(["status","Repayment Successful and Transaction Recorded"]);}
+
+        return response()->json(["status","Repayment Not Successful and Transaction Recorded"]);
 
     }
     function lateFee($bill,$bd,$rd){
@@ -89,6 +103,7 @@ class RepaymentController extends Controller
         }
         return $bill;
     }
+
 
     /**
      * Display the specified resource.

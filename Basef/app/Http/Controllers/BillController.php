@@ -94,7 +94,6 @@ class BillController extends Controller
         $transaction = DB::table('transactions')->select('receiver_id', 'transaction_amount',
             'transaction_date', 'transaction_status')->where('sender_id', '=', $us)->get();
 
-        $bill = $transaction->sum('transaction_amount');
 
         return response()->json($transaction);
 

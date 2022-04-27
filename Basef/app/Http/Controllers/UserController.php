@@ -128,18 +128,34 @@ class UserController extends Controller
 
         return response()->json($limit);
     }
-    public function showbalance($user){
+    public function showbalance(Request $request){
 
-        $balance = DB::table('transactions')->select('credit_balance')
-            ->where('sender_id','=',$user)->first();
+        $credit = User::all()->where('id','=', $request->get('user_id'))->first();
+        $pan = $credit->pancard;
+        $panc = DB::table('credits')->select('credit_limit')
+            ->where('pancard','=',$pan)->first();
+        $limit = $panc->credit_limit;
+        $transaction = DB::table('transactions')->select('id','transaction_amount','transaction_status')
+            ->where('sender_id', '=', $request->get('user_id'))
+            ->where('transaction_type','=','debit')->get();
+        $bill = $transaction->sum('transaction_amount');
+        $refunds = DB::table('transactions')->select('id','transaction_amount','transaction_status')
+            ->where('receiver_id', '=', $request->get('user_id'))
+            ->where('transaction_type','=','refund')->get();
+        $refAmount = $refunds->sum('transaction_amount');
+        $repayments =  $refunds = DB::table('transactions')->select('id','transaction_amount','transaction_status')
+            ->where('sender_id', '=', $request->get('user_id'))
+            ->where('transaction_type','=','repayment')->get();
+        $repayAmount =$repayments->sum('transaction_amount');
+        $balance = $limit - $bill + $refAmount + $repayAmount;
+        return response()->json(["Your Available Balance is :",$balance]);
 
-        return response()->json($balance);
     }
-    public function showbill($user){
+    /*public function showbill($user){
         $bill = DB::table('bills')->select('bill_amount')
             ->where('user_id','=',$user)->first();
 
         return response()->json($bill);
-    }
+    }*/
 
 }

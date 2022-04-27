@@ -44,28 +44,42 @@ class RefundController extends Controller
         $faker=Factory::create();
         $request->validate([
             'transaction_id'=>'required|integer',
-            'transaction_amount'=>'required|integer'
         ]);
         $trans_id=$request->get('transaction_id');
-      /*  $transaction = Transaction::all('transaction_type','transaction_amount',
-            'transaction_date', 'transaction_status')->where('id', '=', $trans_id);*/
-      $transaction = DB::table('transactions')->select('transaction_type','transaction_amount',
-            'transaction_date', 'transaction_status')->where('id', '=', $trans_id)->first();
-        $trans_date = $transaction->transaction_date;
-        $trans_status = $transaction->transaction_status;
-        $trans_amount = $transaction->transaction_amount;
-        $type=$transaction->transaction_type;
+      $transaction = Transaction::all()->where('id', '=', $trans_id)->first();
+      $scid = $transaction->sender_id;
+      $rcid = $transaction->receiver_id;
+      $refund = Refund::all()->where('transaction_id', '=', $trans_id)->first();
+      $rid = $refund->id;
+      $amount = $refund->refund_amount;
+      $status = $refund->refund_status;
+      $rt = DB::table('transactions')->select('credit_balance')
+            ->where('sender_id','=',$scid)
+            ->orderBy('transaction_date','desc')->first();
+      $rs = $rt->credit_balance;
+        echo($rs);
+        DB::table('transactions')->insert([
+            'id'=>$rid,
+            'sender_id' =>$rcid,
+            'receiver_id' => $scid,
+            'transaction_type'=>'refund',
+            'transaction_amount' => $amount,
+            'transaction_status' => $status,
+            'transaction_date' => now(),
+            'credit_balance'=> (int)$this->summ($rs, $amount)
 
-        if($trans_status == false ) {
-            DB::table('refunds')->insert([
-                'transaction_id' => $trans_id,
-                'refund_amount' => $trans_amount,
-                'refund_date' => $faker->dateTimeBetween($trans_date,'+1 week'),
-                'refund_status'=>1,
-            ]);
-            return response()->json(["status","Transaction failed and send to refunds"]);
-        }
-        return response()->json(["status","Transaction failed but not send to refunds"]);
+        ]);
+        if($status ==1){return response()->json(["status"=>"Transaction Recorded and Amount Refund"]);}
+        return response()->json(["status"=>"Transaction Recorded and Amount Not Refunded"]);
+
+
+
+
+    }
+    function summ($b,$c)
+    {
+            return $b + $c;
+
 
     }
 
