@@ -18,7 +18,6 @@ class CreateTransactionsTable extends Migration
             $table->integer('sender_id');
             $table->integer('receiver_id');
             $table->string('transaction_type');
-            $table->integer('credit_limit');
             $table->Integer('transaction_amount');
 
             $table->boolean('transaction_status');

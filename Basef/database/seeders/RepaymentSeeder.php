@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bill;
 use App\Models\Repayment;
 use App\Models\Transaction;
+use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
@@ -19,18 +20,18 @@ class RepaymentSeeder extends Seeder
      */
     public function run()
     {   $faker=Factory::create();
-        $transaction = Transaction::all()->random();
-        $transaction_date = $transaction->transaction_date;
-        $bill = Bill::all()->random();
+        $user = User::all()->random();
+        $user_id = $user->id;
+        $bill = Bill::all()->where('user_id','=',$user_id)->first();
         $bill_id = $bill->id;
         $bill_amount=$bill->bill_amount;
         $bill_date=$bill->bill_due_date;
         DB::table('repayments')->insert([
             'bill_id'=>$bill_id,
 
-            'repayment_date'=>$rd=$faker->dateTimeBetween($bill_date,"$bill_date + 2 month"),
+            'repayment_date'=>$rd= now(),
             'repayment_amount'=> (int)$this->lateFee($bill_amount,$bill_date,$rd),
-            'repayment_status'=>rand(0,1)
+            'repayment_status'=>1
         ]);
 
 

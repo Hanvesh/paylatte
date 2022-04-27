@@ -15,7 +15,7 @@ class CreateRefundsTable extends Migration
     {
         Schema::create('refunds', function (Blueprint $table) {
             $table->id();
-            $table->String('transaction_id');
+            $table->integer('transaction_id')->unique();
             $table->Integer('refund_amount');
             $table->boolean('refund_status');
             $table->timestamp('refund_date');

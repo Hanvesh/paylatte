@@ -20,6 +20,7 @@ class CreateVendorsTable extends Migration
             $table->string('password');
             $table->string('phone_number');
             $table->string('address');
+            $table->integer('account_balance');
             $table->timestamps();
         });
     }

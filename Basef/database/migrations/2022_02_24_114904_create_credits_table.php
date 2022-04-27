@@ -15,7 +15,7 @@ class CreateCreditsTable extends Migration
     {
         Schema::create('credits', function (Blueprint $table) {
             $table->id();
-            $table->String('pancard');
+            $table->String('pancard')->unique();
             $table->foreign('pancard')->references('pancard')->on('users');
             $table->integer('credit_score');
             $table->integer('gross_revenue');

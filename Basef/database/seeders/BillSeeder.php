@@ -29,8 +29,8 @@ class BillSeeder extends Seeder
         DB::table('bills')->insert([
             'user_id'=>$user_id,
             'bill_amount'=>(int)$this->processfee($bill),
-            'bill_due_date'=>$faker->dateTimeBetween($trans_date,"$trans_date + 1 month"),
-            'bill_status'=>rand(0,1)
+            'bill_due_date'=> now(),
+            'bill_status'=>1
         ]);
 
 

@@ -18,6 +18,7 @@ class CreditSeeder extends Seeder
 
     { $user = User::all()->random();
         $pan = $user->pancard;
+
         DB::table('credits')->insert([
             'pancard'=> $pan,
             'credit_score'=> $cr = rand(600,900),

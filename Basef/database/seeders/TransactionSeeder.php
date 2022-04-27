@@ -24,34 +24,33 @@ class TransactionSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-        $user = User::all()->random();
-        $user_id = $user->id;
+        $credit = User::all()->where('id','=', 756812974510309377)->first();
+        $pan = $credit->pancard;
+        $panc = DB::table('credits')->select('credit_limit')
+            ->where('pancard','=',$pan)->first();
+        $limit = $panc->credit_limit;
         $vendor = Vendor::all()->random();
         $vendor_id = $vendor->id;
-        $credit = Credit::all()->random();
-        $limit = $credit->credit_limit;
-        $item = Item::all()->random();
-        $item_cost =$item->item_cost ;
+        //$item = Item::all()->random();
+        //$item_cost =$item->item_cost ;
 
-        $arr =['repayment','refund','debit'];
 
         DB::table('transactions')->insert([
-            'sender_id' =>  $user_id,
-            'receiver_id' => $vendor_id,
-            'transaction_type'=>Arr::random($arr),
-            'credit_limit'=>$limit,
-            'transaction_amount' => $tr = $item_cost,
-            'transaction_status' => $ts = rand(0,1),
-            'transaction_date' => $faker->dateTimeBetween('-2 years'),
-            'credit_balance' => $this->diff($ts,$limit,$tr),
+            'sender_id' => "756812974510309377",
+            'receiver_id' => "756813458726846465",
+            'transaction_type'=>"debit",
+            'transaction_amount' => $tr = 0,
+            'transaction_status' => $ts = 1,
+            'transaction_date' => now(),
+            'credit_balance' => $limit
+
         ]);
     }
     function diff($a,$b,$c){
-        if (($a ==1) and ($b > $c)){
+        if(($a==1) and($b >$c)){
             $b = $b - $c;
         }
         return $b;
 
     }
-
 }

@@ -17,19 +17,20 @@ class RefundSeeder extends Seeder
      */
     public function run()
     {   $faker=Factory::create();
-        $transaction = Transaction::all()->random();
-        $trans_id = $transaction->id;
+        $ids = Transaction::all()->random();
+        $id = $ids->id;
+        $transaction = Transaction::all()
+        ->where('id','=',$id)
+            ->where('transaction_status','=',false)->first();
         $trans_amount=$transaction->transaction_amount;
-        $trans_status=$transaction->transaction_status;
         $transaction_date = $transaction->transaction_date;
-       if($trans_status == false ) {
            DB::table('refunds')->insert([
-               'transaction_id' => $trans_id,
+               'transaction_id' => $id,
                'refund_amount' => $trans_amount,
-               'refund_date' => $faker->dateTimeBetween($transaction_date,'+1 week'),
+               'refund_date' => now(),
                'refund_status'=>1,
            ]);
        }
-    }
+
 
 }
