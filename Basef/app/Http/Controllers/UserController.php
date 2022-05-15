@@ -116,10 +116,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+         $user = DB::table('users')->select('*')->where('id','=',$id)->first();
+        $pan = $user->pancard;
+        $card = DB::table('credits')->select('*')->where('pancard','=',$pan)->delete();
+        $bill = DB::table('bills')->select('*')->where('user_id','=',$id)->delete();
+        $userid = User::findOrFail($id);
+        $userid->delete();
 
-        return response()->json($user::all());
+     return response()->json(['message' => "Data deleted Successfully", 'code' => 1], 200);
     }
     public function showlimit($pan){
 
